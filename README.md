@@ -111,7 +111,7 @@ git tag v1.0.0
 git push origin v1.0.0
 ```
 
-推送 `v*` 标签后自动触发：5 个平台（linux/darwin × amd64/arm64 + windows/amd64）并行交叉编译，每个产物附带 `.sha256` 校验文件，最后汇总创建 GitHub Release 并自动生成 Release Notes（基于 commits 与 PR）。
+推送 `v*` 标签后自动触发：CI 安装 upx 并编译两套产物——未压缩版（`gospeed-linux-amd64`、`gospeed-linux-mt7981-arm64`，MT7981 等 ARM64 路由器）与 upx 压缩版（同名加 `-upx` 后缀，体积缩小约 60%），各附带 `.sha256` 校验文件，自动创建 GitHub Release 并生成 Release Notes（基于 commits 与 PR）。版本号取自 git 标签；本地运行 `./build.sh` 时默认用日期作为版本号。
 
 ## 许可
 

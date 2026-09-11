@@ -11,9 +11,11 @@
 #   ./build.sh --upx amd64        只编译 linux 64 位,upx 压缩
 set -euo pipefail
 
-VERSION=$(date +%Y%m%d)
+# 版本号: 优先取环境变量 GOSPEED_VERSION(CI 传入 git tag), 否则用日期
+VERSION="${GOSPEED_VERSION:-$(date +%Y%m%d)}"
 LDFLAGS="-s -w -X main.version=${VERSION}"
-OUTDIR=bin
+# 产物目录: 可用环境变量 GOSPEED_OUTDIR 覆盖(CI 用于区分压缩/未压缩产物)
+OUTDIR="${GOSPEED_OUTDIR:-bin}"
 USE_UPX=0
 
 # 目标列表: 名称|GOARCH|输出文件
