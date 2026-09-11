@@ -10,18 +10,18 @@ import (
 	"os"
 	"os/signal"
 	"strings"
-	"syscall"
 	"sync"
 	"sync/atomic"
+	"syscall"
 	"time"
 )
 
 // 模拟最新版 Chrome (Windows x64) 的 User-Agent
-const defaultChromeUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+const defaultChromeUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36"
 
 const defaultChromeHeadersTemplate = `Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
 Accept-Language: zh-CN,zh;q=0.9,en;q=0.8
-Sec-Ch-Ua: "Chromium";v="141", "Not_A Brand";v="24"
+Sec-Ch-Ua: "Chromium";v="152", "Not_A Brand";v="24"
 Sec-Ch-Ua-Mobile: ?0
 Sec-Ch-Ua-Platform: "Windows"
 Sec-Fetch-Dest: document
@@ -56,12 +56,12 @@ const usageText = `speed-go: HTTP/HTTPS 下载压测工具
 `
 
 type config struct {
-	url         string
-	connections int
-	duration    string
-	insecure    bool
-	userAgent   string
-	referer     string
+	url          string
+	connections  int
+	duration     string
+	insecure     bool
+	userAgent    string
+	referer      string
 	extraHeaders map[string]string
 }
 
