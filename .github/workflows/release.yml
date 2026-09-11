@@ -70,12 +70,20 @@ jobs:
             cp "${f}" "dist/release/$(basename "${f}")-upx"
           done
 
+      # 生成 sha256, 直接写入 Release 说明, 不单独提供 .sha256 文件
       - name: Generate checksums
+        id: checksums
         run: |
           cd dist/release
-          for f in gospeed-*; do
-            sha256sum "${f}" > "${f}.sha256"
-          done
+          {
+            echo "body<<EOF"
+            echo "## SHA256 校验值"
+            echo ""
+            echo '```'
+            sha256sum gospeed-*
+            echo '```'
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
           ls -lh
 
       # 手动运行没有 tag, 指定 tag_name 让其在当前分支 HEAD 上自动创建
@@ -83,5 +91,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.ver.outputs.tag }}
+          body: ${{ steps.checksums.outputs.body }}
           generate_release_notes: true
-          files: dist/release/*
+          files: dist/release/gospeed-*

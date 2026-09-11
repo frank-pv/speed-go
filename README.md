@@ -111,7 +111,7 @@ git tag v1.0.0
 git push origin v1.0.0
 ```
 
-在仓库 **Actions → Release → Run workflow** 手动运行（可选填版本号，留空用当天日期，会在当前分支 HEAD 上自动创建对应 tag）。CI 安装 upx 并编译两套产物——未压缩版（`gospeed-linux-amd64`、`gospeed-linux-mt7981-arm64`，MT7981 等 ARM64 路由器）与 upx 压缩版（同名加 `-upx` 后缀，体积缩小约 60%），各附带 `.sha256` 校验文件，自动创建 GitHub Release 并生成 Release Notes（基于 commits 与 PR）。本地运行 `./build.sh` 时默认用日期作为版本号。
+在仓库 **Actions → Release → Run workflow** 手动运行（可选填版本号，留空用当天日期，会在当前分支 HEAD 上自动创建对应 tag）。CI 安装 upx 并编译两套产物——未压缩版（`gospeed-linux-amd64`、`gospeed-linux-mt7981-arm64`，MT7981 等 ARM64 路由器）与 upx 压缩版（同名加 `-upx` 后缀，体积缩小约 60%），自动创建 GitHub Release 并生成 Release Notes（基于 commits 与 PR），所有产物的 SHA256 校验值直接写在 Release 说明中。本地运行 `./build.sh` 时默认用日期作为版本号。
 
 ## 许可
 
