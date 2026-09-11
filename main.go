@@ -218,8 +218,8 @@ func run(ctx context.Context, cfg *config) {
 				total := st.bytes.Load()
 				rate := float64(total-lastBytes) / (1024 * 1024)
 				lastBytes = total
-				fmt.Printf("[%s] 速率: %8.2f MB/s | 总流量: %.2f MB | 请求数: %d(错误%d)\n",
-					time.Now().Format("15:04:05"), rate, float64(total)/(1024*1024),
+				fmt.Printf("[%s] 速率: %8.2f MB/s | 总流量: %s | 请求数: %d(错误%d)\n",
+					time.Now().Format("15:04:05"), rate, humanBytes(total),
 					st.requests.Load(), st.errors.Load())
 			}
 		}
