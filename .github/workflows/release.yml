@@ -1,9 +1,13 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - 'v*'
+  # 仅手动运行: Actions 页面 -> Release -> Run workflow
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '版本号 (留空则用当天日期, 如 20260911)'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -21,6 +25,22 @@ jobs:
           go-version-file: go.mod
           cache: true
 
+      # 解析版本号: 用输入值, 留空则当天日期
+      - name: Resolve version
+        id: ver
+        run: |
+          if [[ -n "${{ inputs.version }}" ]]; then
+            VERSION="${{ inputs.version }}"
+          else
+            VERSION="$(date +%Y%m%d)"
+          fi
+          # Release 需要一个 tag, 没有则补 v 前缀
+          TAG="${VERSION}"
+          [[ "${TAG}" == v* ]] || TAG="v${VERSION}"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "版本: ${VERSION}, Release tag: ${TAG}"
+
       # 安装 upx, 用于压缩产物 (对应本地 ./build.sh --upx)
       - name: Install upx
         run: |
@@ -31,13 +51,13 @@ jobs:
       # (linux/amd64 + linux/arm64-mt7981, CGO_ENABLED=0 静态编译)
       - name: Build (未压缩)
         env:
-          GOSPEED_VERSION: ${{ github.ref_name }}
+          GOSPEED_VERSION: ${{ steps.ver.outputs.version }}
           GOSPEED_OUTDIR: dist/plain
         run: ./build.sh
 
       - name: Build (upx 压缩)
         env:
-          GOSPEED_VERSION: ${{ github.ref_name }}
+          GOSPEED_VERSION: ${{ steps.ver.outputs.version }}
           GOSPEED_OUTDIR: dist/upx
         run: ./build.sh --upx
 
@@ -58,8 +78,10 @@ jobs:
           done
           ls -lh
 
+      # 手动运行没有 tag, 指定 tag_name 让其在当前分支 HEAD 上自动创建
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.ver.outputs.tag }}
           generate_release_notes: true
           files: dist/release/*
