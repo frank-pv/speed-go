@@ -65,8 +65,8 @@ jobs:
       - name: Collect artifacts
         run: |
           mkdir -p dist/release
-          cp dist/plain/gospeed-* dist/release/
-          for f in dist/upx/gospeed-*; do
+          cp dist/plain/speed-go-* dist/release/
+          for f in dist/upx/speed-go-*; do
             cp "${f}" "dist/release/$(basename "${f}")-upx"
           done
 
@@ -80,7 +80,7 @@ jobs:
             echo "## SHA256 校验值"
             echo ""
             echo '```'
-            sha256sum gospeed-*
+            sha256sum speed-go-*
             echo '```'
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
@@ -93,4 +93,4 @@ jobs:
           tag_name: ${{ steps.ver.outputs.tag }}
           body: ${{ steps.checksums.outputs.body }}
           generate_release_notes: true
-          files: dist/release/gospeed-*
+          files: dist/release/speed-go-*

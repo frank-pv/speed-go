@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# gospeed 编译脚本
+# speed-go 编译脚本
 # 用法: ./build.sh [选项] [目标]
 #   目标: all(默认) / amd64 / mt7981
 #   选项: --upx   使用 upx 压缩产物(默认不压缩)
@@ -20,8 +20,8 @@ USE_UPX=0
 
 # 目标列表: 名称|GOARCH|输出文件
 TARGETS=(
-    "amd64|amd64|gospeed-linux-amd64"
-    "mt7981|arm64|gospeed-linux-mt7981-arm64"
+    "amd64|amd64|speed-go-linux-amd64"
+    "mt7981|arm64|speed-go-linux-mt7981-arm64"
 )
 
 # 解析参数:--upx 为选项,其余为目标名
